@@ -1,0 +1,129 @@
+<templateSet group="GCP + JAVA">
+  <template name="datastore" value="&lt;dependency&gt;&#10;    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;&#10;    &lt;artifactId&gt;spring-cloud-gcp-starter-data-datastore&lt;/artifactId&gt;&#10;&lt;/dependency&gt;" description="datastore dependency" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="XML_TEXT" value="true" />
+    </context>
+  </template>
+  <template name="refund" value="import com.fasterxml.jackson.annotation.JsonFormat&#10;import java.time.LocalDate&#10;import java.time.LocalDateTime&#10;&#10;data class Refund(&#10;    var id: Long?,&#10;&#10;    val userId: String,&#10;    val insertDate: LocalDateTime = LocalDateTime.now(),&#10;    @JsonFormat(pattern=&quot;yyyy-MM-dd&quot;)&#10;    val refundDate: LocalDate,&#10;    val status: String = &quot;PENDING&quot;,&#10;    val type: String,&#10;    val description: String,&#10;    val country: String = &quot;CH&quot;,&#10;    val amount: Double?,&#10;    val currency: String?,&#10;    val distance: Double?&#10;)&#10;" description="refund" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="KOTLIN" value="true" />
+    </context>
+  </template>
+  <template name="jrefund" value="{&#10;  &quot;refundDate&quot;: &quot;2020-07-02&quot;,&#10;  &quot;userId&quot;: &quot;my-user-id-from-keycloak&quot;,&#10;  &quot;type&quot;: &quot;travel&quot;,&#10;  &quot;description&quot;: &quot;Train ticket from Lugano to Milan&quot;,&#10;  &quot;country&quot;: &quot;CH&quot;,&#10;  &quot;amount&quot;: 15,&#10;  &quot;currency&quot;: &quot;EUR&quot;&#10;}" description="json refund" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="ACTION_SCRIPT" value="false" />
+      <option name="ANY_OPENAPI_JSON_FILE" value="false" />
+      <option name="ANY_OPENAPI_YAML_FILE" value="false" />
+      <option name="ASPECTJ" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="ColdFusion" value="false" />
+      <option name="ECMAScript6" value="false" />
+      <option name="GENERAL_JSON_FILE" value="false" />
+      <option name="GENERAL_YAML_FILE" value="false" />
+      <option name="GROOVY" value="false" />
+      <option name="GSP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="HTML" value="false" />
+      <option name="JAVA_CODE" value="false" />
+      <option name="JAVA_SCRIPT" value="false" />
+      <option name="JSON" value="false" />
+      <option name="JSP" value="false" />
+      <option name="KOTLIN" value="false" />
+      <option name="KUBERNETES_RESOURCE" value="false" />
+      <option name="MAVEN" value="false" />
+      <option name="MXML" value="false" />
+      <option name="OGNL" value="false" />
+      <option name="OTHER" value="true" />
+      <option name="REQUEST" value="false" />
+      <option name="SHELL_SCRIPT" value="false" />
+      <option name="SQL" value="false" />
+      <option name="TypeScript" value="false" />
+      <option name="XML" value="false" />
+      <option name="XML_ATTRIBUTE" value="false" />
+    </context>
+  </template>
+  <template name="trace" value="&lt;dependency&gt;&#10;    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;&#10;    &lt;artifactId&gt;spring-cloud-gcp-starter-trace&lt;/artifactId&gt;&#10;&lt;/dependency&gt;&#10;" description="gcp trace" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="logging" value="&lt;dependency&gt;&#10;    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;&#10;    &lt;artifactId&gt;spring-cloud-gcp-starter-logging&lt;/artifactId&gt;&#10;&lt;/dependency&gt;&#10;" description="gcp logging dependency" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="logbackapiconsole" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#10;&lt;configuration&gt;&#10;    &lt;include resource=&quot;org/springframework/boot/logging/logback/base.xml&quot;/&gt;&#10;    &lt;include resource=&quot;org/springframework/cloud/gcp/autoconfigure/logging/logback-appender.xml&quot;/&gt;&#10;&lt;!--    &lt;include resource=&quot;org/springframework/cloud/gcp/autoconfigure/logging/logback-json-appender.xml&quot;/&gt;--&gt;&#10;&#10;    &lt;root level=&quot;INFO&quot;&gt;&#10;        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;&#10;        &lt;appender-ref ref=&quot;STACKDRIVER&quot;/&gt;&#10;        &lt;!--            &lt;appender-ref ref=&quot;CONSOLE_JSON&quot;/&gt;--&gt;&#10;    &lt;/root&gt;&#10;&lt;/configuration&gt;" description="log on stackdriver" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="refundcontroller" value="import org.springframework.web.bind.annotation.GetMapping&#10;import org.springframework.web.bind.annotation.PathVariable&#10;import org.springframework.web.bind.annotation.RequestMapping&#10;import org.springframework.web.bind.annotation.RestController&#10;&#10;@RestController&#10;@RequestMapping(&quot;/refunds&quot;)&#10;class RefundController {&#10;&#10;    @GetMapping(&quot;/convert/{refundId}&quot;)&#10;    fun amountCurrencyConvert(@PathVariable refundId: Long): String {&#10;        logger.info(&quot;Retrieving refund $refundId ...&quot;)&#10;&#10;        val refund = refundRepository.findById(refundId).orElseThrow()&#10;&#10;        val amountConverted: String = restTemplate.getForObject(&quot;${currencyConverterUrl}${refund.refundDate}?currencyCode=${refund.currency}&amp;amount=${refund.amount}&quot;)&#10;&#10;        logger.info(&quot;${refund.amount} ${refund.currency} at date ${refund.refundDate} were equivalent to $amountConverted CHF&quot;)&#10;&#10;        return amountConverted&#10;    }&#10;}" description="create refund controller" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="KOTLIN" value="true" />
+    </context>
+  </template>
+  <template name="nightjarurl" value="nightjar.refund.currency-converter.url=http://currency-converter-service/convert/" description="nightjar url property" toReformat="false" toShortenFQNames="true">
+    <context>
+      <option name="ACTION_SCRIPT" value="false" />
+      <option name="ANY_OPENAPI_JSON_FILE" value="false" />
+      <option name="ANY_OPENAPI_YAML_FILE" value="false" />
+      <option name="ASPECTJ" value="false" />
+      <option name="CSS" value="false" />
+      <option name="CUCUMBER_FEATURE_FILE" value="false" />
+      <option name="CoffeeScript" value="false" />
+      <option name="ColdFusion" value="false" />
+      <option name="ECMAScript6" value="false" />
+      <option name="GENERAL_JSON_FILE" value="false" />
+      <option name="GENERAL_YAML_FILE" value="false" />
+      <option name="GROOVY" value="false" />
+      <option name="GSP" value="false" />
+      <option name="HAML" value="false" />
+      <option name="HTML" value="false" />
+      <option name="JAVA_CODE" value="false" />
+      <option name="JAVA_SCRIPT" value="false" />
+      <option name="JSON" value="false" />
+      <option name="JSP" value="false" />
+      <option name="KOTLIN" value="false" />
+      <option name="KUBERNETES_RESOURCE" value="false" />
+      <option name="MAVEN" value="false" />
+      <option name="MXML" value="false" />
+      <option name="OGNL" value="false" />
+      <option name="OTHER" value="true" />
+      <option name="REQUEST" value="false" />
+      <option name="SHELL_SCRIPT" value="false" />
+      <option name="SQL" value="false" />
+      <option name="TypeScript" value="false" />
+      <option name="XML" value="false" />
+      <option name="XML_ATTRIBUTE" value="false" />
+    </context>
+  </template>
+  <template name="jib" value="&lt;plugin&gt;&#10;    &lt;groupId&gt;com.google.cloud.tools&lt;/groupId&gt;&#10;    &lt;artifactId&gt;jib-maven-plugin&lt;/artifactId&gt;&#10;    &lt;version&gt;2.5.2&lt;/version&gt;&#10;    &lt;configuration&gt;&#10;        &lt;from&gt;&#10;            &lt;image&gt;adoptopenjdk/openjdk11:slim&lt;/image&gt;&#10;        &lt;/from&gt;&#10;        &lt;to&gt;&#10;            &lt;image&gt;dockerhub.welld.io/matteo.codogno/refund&lt;/image&gt;&#10;        &lt;/to&gt;&#10;    &lt;/configuration&gt;&#10;&lt;/plugin&gt;" description="jib maven plugin configuration" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="actuator" value="&lt;dependency&gt;&#10;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;&#10;    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;&#10;&lt;/dependency&gt;" description="actuator dependency" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="skaffold" value="apiVersion: skaffold/v2beta6&#10;kind: Config&#10;metadata:&#10;  name: $name$&#10;build:&#10;  tagPolicy:&#10;    gitCommit: {}&#10;  artifacts:&#10;    - image: $dockerImage$&#10;      jib:&#10;        args:&#10;          - &quot;-DskipTests&quot;&#10;&#10;" description="skaffold template" toReformat="false" toShortenFQNames="true">
+    <variable name="name" expression="" defaultValue="" alwaysStopAt="true" />
+    <variable name="dockerImage" expression="" defaultValue="" alwaysStopAt="true" />
+    <context>
+      <option name="GENERAL_YAML_FILE" value="true" />
+    </context>
+  </template>
+  <template name="micrometer" value="&lt;dependency&gt;&#10;    &lt;groupId&gt;io.micrometer&lt;/groupId&gt;&#10;    &lt;artifactId&gt;micrometer-registry-prometheus&lt;/artifactId&gt;&#10;&lt;/dependency&gt;&#10;" description="micrometer dependency" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+  <template name="jvmflag" value="&lt;container&gt;&#10;    &lt;jvmFlags&gt;&#10;        &lt;jvmFlag&gt;-agentpath:/agents/profiler_java_agent.so=-cprof_service=${project.artifactId},-cprof_service_version=${project.version}&lt;/jvmFlag&gt;&#10;        &lt;jvmFlag&gt;-agentpath:/agents/cdbg_java_agent.so=--logtostderr=1&lt;/jvmFlag&gt;&#10;        &lt;jvmFlag&gt;-Dcom.google.cdbg.version=${project.version}&lt;/jvmFlag&gt;&#10;        &lt;jvmFlag&gt;-Dcom.google.cdbg.module=${project.artifactId}&lt;/jvmFlag&gt;&#10;    &lt;/jvmFlags&gt;&#10;&lt;/container&gt;" description="jib jvm flag" toReformat="true" toShortenFQNames="true">
+    <context>
+      <option name="XML" value="true" />
+    </context>
+  </template>
+</templateSet>
